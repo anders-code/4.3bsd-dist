@@ -33,6 +33,8 @@
 
 MIRROR = https://www.tuhs.org/Archive/Distributions/UCB/4.3BSD
 
+DOCMIRROR = http://blog.livedoor.jp/suzanhud/BSD
+
 # NOTE: this is the correct order for 4.3BSD. In 4.2BSD the order of srcsys
 # and usr are reversed from this. Many scripts do not account for this.
 FILES = \
@@ -56,7 +58,8 @@ cm := ,
 
 # commas separated, no spaces
 FILELIST = $(subst $(sp),$(cm),$(FILES))
-GZFILES = $(FILES:%=%.gz)
+GZFILES  = $(FILES:%=%.gz)
+DOCFILES = 4.3BSD_setup.pdf 4.2BSD_setup.pdf
 
 TAPNAME = 4.3BSD-dist.tap
 
@@ -66,15 +69,18 @@ clean:
 	$(RM) $(FILES) $(TAPNAME)
 
 reallyclean: clean
-	$(RM) $(GZFILES)
+	$(RM) $(GZFILES) $(DOCFILES)
 
 help:
 	awk -F'## ' '/^##/{print $$2}' $(lastword $(MAKEFILE_LIST)) | more
 	
-curlit: $(GZFILES)
+curlit: $(GZFILES) $(DOCFILES)
 
 $(GZFILES):
 	curl -O "${MIRROR}/$@"
+
+$(DOCFILES):
+	curl -O "${DOCMIRROR}/$@"
 
 unzipit: $(FILES)
 
@@ -86,8 +92,8 @@ tapit: $(TAPNAME)
 $(TAPNAME): $(FILES) $(MKSIMTAPE)
 	$(MKSIMTAPE) stand:512 $(filter-out stand,$(FILES)) > $(TAPNAME)
 
-checkit: $(GZFILES) $(TAPNAME)
+checkit: $(GZFILES) $(DOCFILES) $(TAPNAME)
 	sha256sum -c sha256check.txt
 
 updateit:
-	sha256sum $(GZFILES) $(TAPNAME) > sha256check.txt
+	sha256sum $(GZFILES) $(DOCFILES) $(TAPNAME) > sha256check.txt

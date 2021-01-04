@@ -1,5 +1,7 @@
+*.swp
+*.tap
+*.html
 /stand
 /miniroot
 /rootdump
 /*.tar
-/*.tap
