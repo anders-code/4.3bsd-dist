@@ -2,12 +2,12 @@
 ##
 ##     https://www.tuhs.org/Archive/Distributions/UCB/4.3BSD
 ##
-## By default the sources and output tape are cached and checked into the git
-## repo, which is slightly unusual. This means unless one of the `clean` rules
-## is invoked to forcibly rebuild the tape or re-download the sources,
-## invoking `make all` will simply check the hashes.
+## By default the sources are cached and checked into the git repo, which is
+## slightly unusual. This means unless the `reallyclean` rule is invoked to
+## forcibly re-download the sources, invoking `make all` will simply rebuild
+## the tape from the existing impounded downloads and check the hashes.
 ##
-## To completely re-download and rebuild the tape, run: `make reallyclean all`
+## To completely re-download and rebuild everything, run: `make reallyclean all`
 ##
 ##    make [<target>...]
 ##
